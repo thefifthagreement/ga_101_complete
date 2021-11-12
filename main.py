@@ -5,11 +5,13 @@ from answer import answer_len, is_answer, get_mean_score
 from encoding import create_chromosome
 from tools import selection, crossover, mutation
 
+
 def create_population(pop_size, chrom_size):
     # create the base population
     return [create_chromosome(chrom_size) for _ in range(pop_size)]
 
-def generation(population, graded_retain_percent = 0.3, non_graded_retain_percent = 0.2, mutate = True):
+
+def generation(population, graded_retain_percent=0.3, non_graded_retain_percent=0.2, mutate=True):
     
     # selection
     # use the selection(population) function created on exercise 2
@@ -21,13 +23,13 @@ def generation(population, graded_retain_percent = 0.3, non_graded_retain_percen
     # completion to len(population)
     child_nb = len(population) - len(select)
     while len(children) < child_nb:
-        ## crossover
+        # crossover
         parents = random.sample(select, k=2) # randomly selected
 
         # use the crossover(parent1, parent2) function created on exercise 2
         child = crossover(parents[0], parents[1])
         
-        ## mutation
+        # mutation
         # use the mutation(child) function created on exercise 2
         if mutate:
             child = mutation(child)
@@ -35,6 +37,7 @@ def generation(population, graded_retain_percent = 0.3, non_graded_retain_percen
     
     # return the new generation
     return select + children
+
 
 def algorithm(args):
     chrom_size = answer_len()
@@ -45,7 +48,7 @@ def algorithm(args):
 
     graded_retain_percent = float(args[0])
     non_graded_retain_percent = float(args[1])
-    mutation = int(args[2]) == 1
+    mutate = int(args[2]) == 1
 
     # create the base population
     population = create_population(population_size, chrom_size)
@@ -57,7 +60,7 @@ def algorithm(args):
         iteration += 1
 
         # create the next generation using the generation(population) function
-        population = generation(population, graded_retain_percent, non_graded_retain_percent, mutation)
+        population = generation(population, graded_retain_percent, non_graded_retain_percent, mutate)
         
         # display the average score of the population
         score = get_mean_score(population)
@@ -73,7 +76,7 @@ def algorithm(args):
     
     # print the solution
     if answers:
-        print(f"Well done the answer was found (iteration: {iteration}, {max_score:.2%}): \n{answers[0]}")
+        print(f"Well done the answer was found (generation: {iteration}, {max_score:.2%}): \n{answers[0]}")
     else:
         print(f"no solution found... (best score {max_score:.2%})")
 
